@@ -1,0 +1,42 @@
+{
+  "project_info": {
+    "project_number": "457033164020",
+    "firebase_url": "https://schwink-e3cb5.firebaseio.com",
+    "project_id": "schwink-e3cb5",
+    "storage_bucket": "schwink-e3cb5.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:457033164020:android:2781f187d4405f57",
+        "android_client_info": {
+          "package_name": "com.yourcompany.login"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "457033164020-p3up8g4fhfj2ero6kqvi8qu6lq6o3r6t.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCr9E8QePAqty4gV8WTROkOvnzMg5z_rzU"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
