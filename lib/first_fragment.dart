@@ -14,6 +14,7 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:barcode_scan/barcode_scan.dart';
 import 'package:flutter/services.dart';
+import 'package:login/Book.dart';
 
 void main() => runApp(MaterialApp(
       debugShowCheckedModeBanner: false,
@@ -30,8 +31,10 @@ class FirstFragment extends StatefulWidget {
 class FirstFragmentState extends State<FirstFragment> with SingleTickerProviderStateMixin{
   String result = "Fast Scan or Enter the Barcode Manually :)";
   String bookId;
+  int _currentIndex=0;
   TextEditingController _bookidController=TextEditingController();
  TabController tc;
+ List<Book> _books =<Book>[];
   void initState(){
     super.initState();
     tc=new TabController(
@@ -40,7 +43,15 @@ class FirstFragmentState extends State<FirstFragment> with SingleTickerProviderS
       initialIndex: 0
     );
   }
-  void submitBook(){}
+  void submitBook(String id,BuildContext context){
+    setState(() {
+          Book _book =new Book(name: id,returnDate:"0000" );
+    _books.insert(0, _book);
+    _bookidController.clear();
+    Scaffold.of(context).showSnackBar(SnackBar(content: Text("Book Issued"),));
+    _currentIndex=1;
+        });
+  }
 
   Future _scanQR() async {
     try {
@@ -69,7 +80,11 @@ class FirstFragmentState extends State<FirstFragment> with SingleTickerProviderS
       });
     }
   }
-
+  onTabTapped(int index){
+    setState(() {
+          _currentIndex=index;
+        });
+  }
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -85,6 +100,8 @@ class FirstFragmentState extends State<FirstFragment> with SingleTickerProviderS
         ),
       ),*/
       bottomNavigationBar: BottomNavigationBar(
+        onTap: onTabTapped,
+         currentIndex: _currentIndex,
         items: [
           BottomNavigationBarItem(
             icon: new Icon(Icons.bookmark_border),
@@ -93,11 +110,12 @@ class FirstFragmentState extends State<FirstFragment> with SingleTickerProviderS
           ),
           BottomNavigationBarItem(
             icon: new Icon(Icons.book),
-            title: new Text("Pending to return")
+            title: new Text("Pending to return"),
+            
           ),
         ],
       ),
-      body: Column(children: <Widget>[ 
+      body:_currentIndex==0? Column(children: <Widget>[ 
         new Padding(
           padding: EdgeInsets.only(top: 20.0,left: 30.0,right: 20.0,bottom: 15.0 ),
           child: new Text(result,textScaleFactor: 1.3 ,style: TextStyle(fontSize: 20.0, ),)), 
@@ -116,7 +134,7 @@ class FirstFragmentState extends State<FirstFragment> with SingleTickerProviderS
                         hintText: "Barcode Number",),
                          ),
                          new FloatingActionButton(
-                        onPressed: submitBook ,
+                        onPressed:()=> submitBook(_bookidController.text,context),
                         child: Icon(Icons.send),
                         elevation: 7.0,
                         ),                           
@@ -124,13 +142,16 @@ class FirstFragmentState extends State<FirstFragment> with SingleTickerProviderS
                     )
                   ),
                 ],
+              ):ListView.builder(
+                itemCount: _books.length,
+                itemBuilder: (context,int index)=>_books[index],
               ),
 
-      floatingActionButton: FloatingActionButton.extended(
+      floatingActionButton:_currentIndex==0?  FloatingActionButton.extended(
         icon: Icon(Icons.camera_alt),
         label: Text("Fast Scan"),
         onPressed: _scanQR,
-      ),
+      ):null,
       floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
     );
   }
